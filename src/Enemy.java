@@ -3,12 +3,14 @@ public class Enemy {
     String name;
     int initialHealth;
     int health;
+    int attack;
 
     //Constructor
-    public Enemy (String name, int initialHealth, int health) {
+    public Enemy (String name, int initialHealth, int health, int attack) {
         this.name = name;
         this.initialHealth = initialHealth;
         this.health = health;
+        this.attack = attack;
     }
 
 
@@ -38,7 +40,13 @@ public class Enemy {
         this.health = health;
     }
 
+    public int getAttack() {
+        return attack;
+    }
 
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
 
     //Methods
     public void takeDamage(int dmg){

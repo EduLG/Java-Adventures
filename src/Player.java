@@ -1,10 +1,14 @@
 public class Player {
     String name;
+    int health;
     int attack;
+    int defense;
 
-    public Player (String name, int attack){
+    public Player (String name, int health, int attack, int defense){
         this.name = name;
+        this.health = health;
         this.attack = attack;
+        this.defense = defense;
     }
 
     public String getName() {
@@ -15,6 +19,14 @@ public class Player {
         this.name = name;
     }
 
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
     public int getAttack() {
         return attack;
     }
@@ -23,6 +35,17 @@ public class Player {
         this.attack = attack;
     }
 
+    public int getDefense() {
+        return defense;
+    }
+
+    public void setDefense(int defense) {
+        this.defense = defense;
+    }
+
+    public void takeDamage(int enemyDmg){
+        health = health - enemyDmg;
+    }
 
 
 }
