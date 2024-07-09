@@ -5,9 +5,6 @@ public class Main {
 
         Events events = new Events();
 
-        events.Introduction();
         events.choseAction();
-        events.afterBattle();
     }
 }
-

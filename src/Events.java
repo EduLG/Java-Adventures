@@ -5,29 +5,27 @@ public class Events {
     Player user = new Player("User", 100, 25, 15);
     Enemy skull = new Enemy("Skull", 100, 100, 25);
 
-    public void Introduction() {
+
+    public void choseAction(){
 
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("""
+        boolean battleOngoing = true;
+        while (battleOngoing) {
+
+
+            System.out.println("""
                 Welcome to your new adventure.
                 You'll be facing an infinite succession of enemies.
                 Lets see how many of them you can handle.
                 Press enter to continue...""");
+            sc.nextLine();
 
-        sc.nextLine();
-
-
-    }
-
-    public void choseAction(){
-
-        boolean battleOngoing = true;
-        while (battleOngoing) {
             System.out.println(skull.getName() + " has appeared:\n" +
                     "Health: " + skull.getHealth() + "\n");
 
-            while (skull.getHealth() > 0) {
+            while (battleOngoing) {
+
                 System.out.println("""
                         Choose your action:
                         1- Attack
@@ -38,9 +36,7 @@ public class Events {
 
                 switch (choice) {
                     case "1" -> {
-
                         battleOngoing = choiceAttack(user, skull);
-
                     }
                     case "2" -> {
                         boolean diceResult = Dice.fleeDice();
@@ -51,7 +47,7 @@ public class Events {
                                     "Now your health is " + user.getHealth() + "\n");
                         } else {
                             System.out.println("You flee like the piece of sh*t you are. No one likes you.");
-                            return;
+                            System.exit(0);
                         }
                     }
                     case "3" -> {
@@ -69,7 +65,6 @@ public class Events {
             }
         }
     }
-
     public boolean choiceAttack(Player user,Enemy skull ) {
 
         skull.takeDamage(user.getAttack());
@@ -79,15 +74,14 @@ public class Events {
             user.takeDamage(skull.getAttack());
             System.out.println("You've been attacked by " + skull.getName() + ". " + "you loose " + skull.getAttack() + " points of health.\n" +
                     "Now your health is " + user.getHealth() + "\n");
-            if(user.getHealth()<=0) {
+            if (user.getHealth()<=0) {
                 deadPlayer();
             }
         }else{
-            return false;
+            afterBattle();
         }
         return true;
     }
-
     public void afterBattle() {
         System.out.println("You defeated " + skull.getName() + "! Congratulations!\n");
         System.out.println("""
@@ -102,7 +96,7 @@ public class Events {
             System.out.println("Your Health level is now " + user.getHealth());
         }
         if(choice2.equalsIgnoreCase("N")){
-            System.out.println("Then we'll just keep going with your nightmare. " + "Your Health level is " + user.getHealth());
+            System.out.println("Then we'll just keep going with your nightmare. " + "Your Health level is " + user.getHealth() + "\n");
         }
         skull.recover();
     }
