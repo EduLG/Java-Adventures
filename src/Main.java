@@ -1,10 +1,13 @@
 
+
+
 public class Main {
 
     public static void main(String[] args) {
 
         Events events = new Events();
 
-        events.choseAction();
+        events.startGame();
+        events.afterBattle();
     }
 }
