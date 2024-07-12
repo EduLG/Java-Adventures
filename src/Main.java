@@ -1,6 +1,4 @@
 
-
-
 public class Main {
 
     public static void main(String[] args) {
@@ -8,6 +6,5 @@ public class Main {
         Events events = new Events();
 
         events.startGame();
-        events.afterBattle();
     }
 }
