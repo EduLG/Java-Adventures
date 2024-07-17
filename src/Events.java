@@ -11,6 +11,7 @@ public class Events {
 
     public void startGame() {
 
+        //PRESENTATION
         System.out.println("""
                 Welcome to your new adventure.
                 You'll be facing an infinite succession of enemies.
@@ -18,64 +19,54 @@ public class Events {
                 Press enter to continue...""");
         sc.nextLine();
 
+        //BATTLE BEGIN
         while (gameOngoing) {
-            battle();
+            choices();
         }
     }
 
-    public void battle(){
+    public void choices(){
 
+        //COMMAND SELECTION
         skull.recover();
         System.out.println(skull.getName() + " has appeared:\n" +
                 "Health: " + skull.getHealth() + "\n");
-
-        boolean battleOngoing = true;
-        while (battleOngoing) {
-
             System.out.println("""
                 Choose your action:
                 1- Attack
                 2- Defend
                 3- Item
                 4- Flee""");
-
             String choice = sc.nextLine();
 
             switch (choice) {
-                case "1" -> {
-                    attack();
-                }
-                case "2" -> {
-                   defend();
-                }
-                case "3" -> {
-                    item();
-                }
-                case "4" -> {
-                    flee();
-                }
+                case "1" -> {attack();}
+                case "2" -> {defend();}
+                case "3" -> {item();}
+                case "4" -> {flee();}
                 default -> System.out.println("Please, choose between the options given.\n");
             }
-        }
     }
 
     public void attack() {
 
+        //PLAYER ATTACKS
         skull.takeDamage(user.getAttack());
-
         System.out.println("\nYou attack the " + skull.getName() + ". " + skull.getName() +
                 "'s health is now " + skull.getHealth() + ".\n");
 
+        //ENEMY ATTACKS BACK
         if (skull.getHealth() > 0) {
-
             user.takeDamage(skull.getAttack());
-
             System.out.println("You've been attacked by " + skull.getName() + ". " + "you loose " + skull.getAttack() + " points of health.\n" +
                     "Your health is " + user.getHealth() + " points.\n");
 
+            //PLAYER DIES?
             if (user.getHealth()<=0) {
                 deadPlayer();
             }
+
+        //ENEMY DIES?
         }else if(skull.getHealth()<=0) {
             afterBattle();;
         }
@@ -83,26 +74,22 @@ public class Events {
 
     public void defend() {
 
+        //DEFENDS (DAMAGE - DEFENSE)
         System.out.println("You crouch behind your shield.\n");
-
         user.takeDamage(skull.getAttack() - user.getDefense());
-
+        //ENEMY ATTACKS BACK
         System.out.println("You've been attacked by " + skull.getName() + ", " + "but you only loose " + (skull.getAttack() - user.getDefense()) + " points of health.\n" +
                 "Now your health is " + user.getHealth() + "\n");
-
+        //PLAYER DIES?
         if(user.getHealth()<=0) {
             deadPlayer();
         }
     }
 
     public void item() {
-
-        System.out.println("You use a potion. You gain " + potion.getCureHP() + " HP.");
-
         user.setHealth(user.getHealth() + potion.getCureHP());
-
-        System.out.println("Your Health level is now " + user.getHealth() + ".\n");
-
+        System.out.println("You use a potion. You gain " + potion.getCureHP() +
+                " HP. " + "Your Health is now " + user.getHealth() + ".\n");
     }
 
     public void flee() {
@@ -110,14 +97,19 @@ public class Events {
         boolean diceResult = Dice.fleeDice();
 
         if (!diceResult) {
+
+            //CAN'T FLEE
             System.out.println("Couldn't flee...\n");
             user.takeDamage(skull.getAttack());
             System.out.println("You've been attacked by " + skull.getName() + ". " + "you lose " + skull.getAttack() + " points of health.\n" +
                     "Now your health is " + user.getHealth() + "\n");
+
+            //PLAYER DIES?
             if (user.getHealth()<=0) {
                 deadPlayer();
             }
 
+            //SUCCESSFULLY FLEES
         } else {
             System.out.println("You flee like the piece of sh*t you are. No one likes you.");
             System.exit(0);
@@ -131,17 +123,20 @@ public class Events {
                         (Y)es
                         (N)o""");
         String choice2 = sc.nextLine();
+        //DRINKS POTION
         if(choice2.equalsIgnoreCase("Y")){
-            System.out.println("You drink a potion. You recover 25 points of health.");
             user.setHealth(user.getHealth() + potion.getCureHP());
-            System.out.println("Your Health level is now " + user.getHealth() + ".\n");
+            System.out.println("You use a potion. You gain " + potion.getCureHP() +
+                    " HP. " + "Your Health is now " + user.getHealth() + ".\n");
         }
+        //DOESN'T DRINK
         else if(choice2.equalsIgnoreCase("N")){
             System.out.println("Then we'll just keep going with your nightmare. " + "Your Health level is " + user.getHealth() + "\n");
         }
-        skull.recover();
 
-        battle();
+        //BATTLE RESET
+        skull.recover();
+        choices();
     }
 
     public void deadPlayer(){
