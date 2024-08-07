@@ -1,3 +1,8 @@
+package RPG.Resources;
+
+import RPG.Controllers.Dice;
+import RPG.Controllers.Item;
+
 import java.util.Scanner;
 
 

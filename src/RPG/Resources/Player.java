@@ -1,3 +1,5 @@
+package RPG.Resources;
+
 public class Player {
     String name;
     int health;
@@ -10,6 +12,8 @@ public class Player {
         this.attack = attack;
         this.defense = defense;
     }
+
+    //GETSETTERS
 
     public String getName() {
         return name;
@@ -42,6 +46,9 @@ public class Player {
     public void setDefense(int defense) {
         this.defense = defense;
     }
+
+
+    //METHODS
 
     public void takeDamage(int enemyDmg){
         health = health - enemyDmg;

@@ -1,3 +1,5 @@
+package RPG.Controllers;
+
 import java.util.Random;
 
 public class Dice {

@@ -1,3 +1,4 @@
+package RPG.Resources;
 
 public class Main {
 

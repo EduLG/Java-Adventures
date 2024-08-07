@@ -1,3 +1,5 @@
+package RPG.Controllers;
+
 public class Item {
     String name;
     int cureHP;

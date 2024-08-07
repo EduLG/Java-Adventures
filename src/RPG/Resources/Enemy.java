@@ -1,3 +1,5 @@
+package RPG.Resources;
+
 public class Enemy {
 
     String name;
@@ -15,7 +17,8 @@ public class Enemy {
 
 
 
-    //Getters and setters
+    //GETSETTERS
+
     public String getName() {
         return name;
     }
@@ -48,7 +51,7 @@ public class Enemy {
         this.attack = attack;
     }
 
-    //Methods
+    //METHODS
     public void takeDamage(int dmg){
         health = health - dmg;
     }
