@@ -27,7 +27,7 @@ public class DatabaseHandler {
             File archivoActual = new File(DatabaseHandler.class.getProtectionDomain().getCodeSource().getLocation().toURI());
             String dbr = archivoActual.getParent();
             String URI1 = dbr.substring(0, dbr.length() - 6);
-            String dbRoute = (URI1 + "\\src\\main\\java\\org\\DB\\Role.db");
+            String dbRoute = (URI1 + "\\src\\main\\java\\RPG\\DB\\Role.db");
             return dbRoute;
         }
         catch(URISyntaxException e)
@@ -58,7 +58,7 @@ public class DatabaseHandler {
         try (Connection connection = getConnection()){
             Statement stmt = connection.createStatement();
 
-            String query = "SELECT * FROM enemy WHERE id = 1";
+            String query = "SELECT * FROM enemy WHERE id = " + idTurn;
             ResultSet resultSet = stmt.executeQuery(query);
             idTurn =idTurn +1 ;
 

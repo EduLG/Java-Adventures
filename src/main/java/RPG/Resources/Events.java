@@ -10,17 +10,18 @@ import java.util.Scanner;
 public class Events {
 
     //ATRIBUTES
+    private Enemy enemy;
     private DatabaseHandler dbHandler;
-    //METHOD
+    Scanner sc = new Scanner(System.in);
+
+    Player user = new Player("User", 100, 25, 15);
+    Item potion = new Item("Potion", 25);
+
+
+    //METHODS
     public Events() {
         dbHandler = new DatabaseHandler();
     }
-
-
-    Scanner sc = new Scanner(System.in);
-    Player user = new Player("User", 100, 25, 15);
-    Item potion = new Item("Potion", 25);
-    boolean gameOngoing = true;
 
     public void startGame() {
 
@@ -31,21 +32,24 @@ public class Events {
                 Lets see how many of them you can handle.
                 Press enter to continue...""");
         sc.nextLine();
+        newEnemy();
+    }
 
-        //BATTLE BEGIN
-        while (gameOngoing) {
+    public void newEnemy(){
+
+        enemy =dbHandler.getEnemy();
+
+        if(enemy != null) {
+            System.out.println("A " + enemy.getName() + " has appeared:\n Health: " + enemy.getHealth() + "\n");
             choices();
+        }else{
+            System.out.println("No enemies found in DB");
         }
     }
 
     public void choices(){
-        Enemy enemy = dbHandler.getEnemy();
-
-        if(enemy != null) {
-
 
             //COMMAND SELECTION
-            System.out.println("A new enemy has appeared:\n");
             System.out.println("""
                 Choose your action:
                 1- Attack
@@ -61,23 +65,20 @@ public class Events {
                 case "4" -> {flee();}
                 default -> System.out.println("Please, choose between the options given.\n");
             }
-        }else{
-            System.out.println("No enemies found in DB");
-        }
     }
 
     public void attack() {
 
         //PLAYER ATTACKS
-        dbHandler.getEnemy().takeDamage(user.getAttack());
-        System.out.println("\nYou attack the " + dbHandler.getEnemy().getName() + ". " + dbHandler.getEnemy().getName() +
-                "'s health is now " + dbHandler.getEnemy().getHealth() + ".\n");
+        enemy.takeDamage(user.getAttack());
+        System.out.println("\nYou attack the " + enemy.getName() + ". " + enemy.getName() +
+                "'s health is now " + enemy.getHealth() + ".\n");
 
         //ENEMY ATTACKS BACK
-        if (dbHandler.getEnemy().getHealth() > 0) {
-            user.takeDamage(dbHandler.getEnemy().getAttack());
-            System.out.println("You've been attacked by " + dbHandler.getEnemy().getName() + ". " + "you loose " + dbHandler.getEnemy().getAttack() + " points of health.\n" +
-                    "Your health is " + user.getHealth() + " points.\n");
+        if (enemy.getHealth() > 0) {
+            user.takeDamage(enemy.getAttack());
+            System.out.println("You've been attacked by " + enemy.getName() + ". " + "you loose " + enemy.getAttack() + " points of health.\n" + "Your health is " + user.getHealth() + " points.\n");
+            choices();
 
             //PLAYER DIES?
             if (user.getHealth()<=0) {
@@ -85,7 +86,7 @@ public class Events {
             }
 
             //ENEMY DIES?
-        }else if(dbHandler.getEnemy().getHealth()<=0) {
+        }else if(enemy.getHealth()<=0) {
             afterBattle();;
         }
     }
@@ -94,9 +95,9 @@ public class Events {
 
         //DEFENDS (DAMAGE - DEFENSE)
         System.out.println("You crouch behind your shield.\n");
-        user.takeDamage(dbHandler.getEnemy().getAttack() - user.getDefense());
+        user.takeDamage(enemy.getAttack() - user.getDefense());
         //ENEMY ATTACKS BACK
-        System.out.println("You've been attacked by " + dbHandler.getEnemy().getName() + ", " + "but you only loose " + (dbHandler.getEnemy().getAttack() - user.getDefense()) + " points of health.\n" +
+        System.out.println("You've been attacked by " + enemy.getName() + ", " + "but you only loose " + (enemy.getAttack() - user.getDefense()) + " points of health.\n" +
                 "Now your health is " + user.getHealth() + "\n");
         //PLAYER DIES?
         if(user.getHealth()<=0) {
@@ -118,8 +119,8 @@ public class Events {
 
             //CAN'T FLEE
             System.out.println("Couldn't flee...\n");
-            user.takeDamage(dbHandler.getEnemy().getAttack());
-            System.out.println("You've been attacked by " + dbHandler.getEnemy().getName() + ". " + "you lose " + dbHandler.getEnemy().getAttack() + " points of health.\n" +
+            user.takeDamage(enemy.getAttack());
+            System.out.println("You've been attacked by " + enemy.getName() + ". " + "you lose " + enemy.getAttack() + " points of health.\n" +
                     "Now your health is " + user.getHealth() + "\n");
 
             //PLAYER DIES?
@@ -135,7 +136,7 @@ public class Events {
     }
 
     public void afterBattle() {
-        System.out.println("You defeated " + dbHandler.getEnemy().getName() + "! Congratulations!\n");
+        System.out.println("You defeated " + enemy.getName() + "! Congratulations!\n");
         System.out.println("""
                         Would you like to use a potion to heal yourself?
                         (Y)es
@@ -153,7 +154,7 @@ public class Events {
         }
 
         //BATTLE RESET
-        choices();
+        newEnemy();
     }
 
     public void deadPlayer(){
@@ -162,3 +163,4 @@ public class Events {
         System.exit(0);
     }
 }
+
